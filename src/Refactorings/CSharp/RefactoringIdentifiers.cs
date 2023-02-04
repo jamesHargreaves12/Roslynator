@@ -4,5 +4,7 @@ namespace Roslynator.CSharp.Refactorings;
 
 public static partial class RefactoringIdentifiers
 {
+
+    
     public const string Prefix = "RR";
 }
