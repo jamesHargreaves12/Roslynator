@@ -930,6 +930,8 @@ class C
 {
     public int [|P|]
         {
+
+
             get
             { 
                 return p; 
@@ -950,5 +952,4 @@ class C
 }
 ");
     }
-
 }
