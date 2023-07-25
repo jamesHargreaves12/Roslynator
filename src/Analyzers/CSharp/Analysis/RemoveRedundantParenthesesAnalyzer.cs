@@ -214,6 +214,7 @@ public sealed class RemoveRedundantParenthesesAnalyzer : BaseDiagnosticAnalyzer
                         case SyntaxKind.SimpleAssignmentExpression:
                         case SyntaxKind.AddAssignmentExpression:
                         case SyntaxKind.SubtractAssignmentExpression:
+                        case SyntaxKind.EqualsValueClause:
                             {
                                 ReportDiagnostic();
                                 break;
