@@ -147,12 +147,12 @@ class C
     void M(bool p)
     {
         var f = () => 
-        {
-            [|if|] (p)
             {
-                M2();
-            }
-        };
+                [|if|] (p)
+                {
+                    M2();
+                }
+            };
     }
 
     void M2()
@@ -172,8 +172,7 @@ class C
                 }
 
                 M2();
-            }
-;
+            };
     }
 
     void M2()
@@ -197,7 +196,6 @@ class C
             {
                 M2();
             }
-
         }
         M3();
     }
@@ -560,8 +558,7 @@ class C
 }
 ");
     }
-    
-    
+
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
     public async Task TestDiagnostic_DoesNot_IncorrectlyRecurse()
     {
@@ -590,7 +587,7 @@ class C
     {
     }
 }
-",@"
+", @"
 class C
 {
     void M(bool p, bool q, bool r)
