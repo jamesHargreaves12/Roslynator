@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -29,6 +30,21 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
         return UseExplicitlyOrImplicitlyTypedArrayFixAllProvider.Instance;
     }
 
+    public override FixAllProvider GetFixAllProvider()
+    {
+        return FixAllProvider.Create(async (context, document, diagnostics) => await FixAllAsync(document, diagnostics, context.CancellationToken).ConfigureAwait(false));
+    }
+
+    private async Task<Document> FixAllAsync(Document document, ImmutableArray<Diagnostic> diagnostics, CancellationToken cancellationToken)
+    {
+        foreach (Diagnostic diagnostic in diagnostics.OrderByDescending(d => d.Location.SourceSpan.Start))
+        {
+            document = await ApplyFixToDocumentAsync(document, diagnostic, cancellationToken).ConfigureAwait(false);
+        }
+
+        return document;
+    }
+
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
     {
         SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -45,39 +61,38 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
         Document document = context.Document;
         Diagnostic diagnostic = context.Diagnostics[0];
 
-        var title = node switch
+        string title = node switch
         {
             ImplicitArrayCreationExpressionSyntax => "Use explicitly typed array",
             ArrayCreationExpressionSyntax => "Use implicitly typed array",
             _ => "",
         };
-        
+
         CodeAction codeAction = CodeAction.Create(
             title,
-            ct => ApplyFixToDocument(document, diagnostic, ct),
+            ct => ApplyFixToDocumentAsync(document, diagnostic, ct),
             GetEquivalenceKey(diagnostic));
 
         context.RegisterCodeFix(codeAction, diagnostic);
     }
 
-    public async Task<Document> ApplyFixToDocument(Document document, Diagnostic diag, CancellationToken cancellationToken)
+    public async Task<Document> ApplyFixToDocumentAsync(Document document, Diagnostic diag, CancellationToken cancellationToken)
     {
-        var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-        
+        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
         if (!TryFindFirstAncestorOrSelf(
-                root,
-                diag.Location.SourceSpan,
-                out SyntaxNode node,
-                predicate: f =>
-                    f.IsKind(SyntaxKind.ImplicitArrayCreationExpression, SyntaxKind.ArrayCreationExpression)))
+            root,
+            diag.Location.SourceSpan,
+            out SyntaxNode node,
+            predicate: f => f.IsKind(SyntaxKind.ImplicitArrayCreationExpression, SyntaxKind.ArrayCreationExpression)))
         {
             return null;
         }
 
         return node switch
         {
-            ImplicitArrayCreationExpressionSyntax implicitArrayCreation => await ChangeArrayTypeToExplicitAsync(document, implicitArrayCreation, cancellationToken),
-            ArrayCreationExpressionSyntax arrayCreation => await ChangeArrayTypeToImplicitAsync(document, arrayCreation, cancellationToken),
+            ImplicitArrayCreationExpressionSyntax implicitArrayCreation => await ChangeArrayTypeToExplicitAsync(document, implicitArrayCreation, cancellationToken).ConfigureAwait(false),
+            ArrayCreationExpressionSyntax arrayCreation => await ChangeArrayTypeToImplicitAsync(document, arrayCreation, cancellationToken).ConfigureAwait(false),
             _ => null
         };
     }

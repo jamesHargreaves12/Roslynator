@@ -70,7 +70,7 @@ public sealed class UnnecessaryAssignmentAnalyzer : BaseDiagnosticAnalyzer
         if (!IsLocalDeclaredInScopeOrNonRefOrOutParameterOfEnclosingSymbol(symbol, statementsInfo.Parent, semanticModel, cancellationToken))
             return;
 
-        ITypeSymbol returnTypeSymbol = semanticModel.GetTypeInfo(expression, cancellationToken).Type;
+        ITypeSymbol returnTypeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
 
         foreach (IfStatementOrElseClause ifOrElse in ifStatement.AsCascade())
         {
@@ -213,6 +213,6 @@ public sealed class UnnecessaryAssignmentAnalyzer : BaseDiagnosticAnalyzer
 
         return assignmentInfo.Success
             && SymbolEqualityComparer.Default.Equals(semanticModel.GetSymbol(assignmentInfo.Left, cancellationToken), symbol)
-            && typeSymbol.Equals(semanticModel.GetTypeInfo(assignmentInfo.Right, cancellationToken).Type);
+            && SymbolEqualityComparer.Default.Equals(typeSymbol, semanticModel.GetTypeSymbol(assignmentInfo.Right, cancellationToken));
     }
 }

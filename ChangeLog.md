@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add GitHub workflow ([#1112](https://github.com/josefpihrt/roslynator/pull/1112))
+- Add Custom FixAllProvider for [RCS1014](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1014.md) ([#1070](https://github.com/JosefPihrt/Roslynator/pull/1070)).
 
 ### Changed
 
@@ -18,35 +19,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Migrate documentation to [Docusaurus](https://josefpihrt.github.io/docs/roslynator) ([#922](https://github.com/josefpihrt/roslynator/pull/922)).
 
 ### Fixed
-- Fix [RCS1084](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1084.md) ([#1085](https://github.com/josefpihrt/roslynator/pull/1085)).
+- Fix [RCS1016](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1016) ([#1090](https://github.com/josefpihrt/roslynator/pull/1090)).
 - Improve inversion of logical expressions to handling additional cases ([#1086](https://github.com/josefpihrt/roslynator/pull/1086)).
-- Fix [RCS1169](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1169.md) ([#1092](https://github.com/JosefPihrt/Roslynator/pull/1092)).
-- Fix [RCS1216](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1216.md) ([#1094](https://github.com/JosefPihrt/Roslynator/pull/1094)).
-- Fix [RCS1016](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1016.md) ([#1090](https://github.com/josefpihrt/roslynator/pull/1090)).
-- Improve inversion of logical expressions to handling additional cases ([#1086](https://github.com/josefpihrt/roslynator/pull/1086)).
-- Fix [RCS1084](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1084.md) ([#1085](https://github.com/josefpihrt/roslynator/pull/1085)).
-- Fix [RCS1169](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1169.md) ([#1092](https://github.com/JosefPihrt/Roslynator/pull/1092)).
-- Recognize more shapes of IAsyncEnumerable as being Async ([RCS1047](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1047.md)) ([#1084](https://github.com/josefpihrt/roslynator/pull/1084)).
-- Fix [RCS1197](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1197.md) ([#1093](https://github.com/JosefPihrt/Roslynator/pull/1093)).
-- Fix [RCS1211](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1211.md) ([#1095](https://github.com/JosefPihrt/Roslynator/pull/1095)).
-- Fix [RCS1216](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1216.md) ([#1094](https://github.com/JosefPihrt/Roslynator/pull/1094)).
-- Fix [RCS1056](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1056.md) ([#1096](https://github.com/JosefPihrt/Roslynator/pull/1096)).
-- Fix [RCS1146](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1146.md) ([#1098](https://github.com/JosefPihrt/Roslynator/pull/1098)).
-- Fix [RCS1056](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1056.md) ([#1096](https://github.com/JosefPihrt/Roslynator/pull/1096)).
-- Fix [RCS1216](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1216.md) ([#1094](https://github.com/JosefPihrt/Roslynator/pull/1094)).
-- Fix [RCS1056](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1056.md) ([#1096](https://github.com/JosefPihrt/Roslynator/pull/1096)).
-- Fix [RCS1216](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1216.md) ([#1094](https://github.com/JosefPihrt/Roslynator/pull/1094)).
-- Fix [RCS1146](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1146.md) ([#1098](https://github.com/JosefPihrt/Roslynator/pull/1098)).
-- Fix [RCS1154](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1154.md) ([#1105](https://github.com/JosefPihrt/Roslynator/pull/1105)).
-- Fix [RCS1211](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1211.md) ([#1095](https://github.com/JosefPihrt/Roslynator/pull/1095)).
-- Fix [RCS0005](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0005.md) ([#1114](https://github.com/JosefPihrt/Roslynator/pull/1114)).
-- Fix [RCS1176](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1176.md) ([#1122](https://github.com/JosefPihrt/Roslynator/pull/1122)).
+- Fix [RCS1084](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1084) ([#1085](https://github.com/josefpihrt/roslynator/pull/1085)).
+- Fix [RCS1169](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1169) ([#1092](https://github.com/JosefPihrt/Roslynator/pull/1092)).
+- Recognize more shapes of IAsyncEnumerable as being Async ([RCS1047](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1047)) ([#1084](https://github.com/josefpihrt/roslynator/pull/1084)).
+- Fix [RCS1197](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1197) ([#1093](https://github.com/JosefPihrt/Roslynator/pull/1093)).
+- Fix [RCS1056](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1056) ([#1096](https://github.com/JosefPihrt/Roslynator/pull/1096)).
+- Fix [RCS1216](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1216) ([#1094](https://github.com/JosefPihrt/Roslynator/pull/1094)).
+- Fix [RCS1146](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1146) ([#1098](https://github.com/JosefPihrt/Roslynator/pull/1098)).
+- Fix [RCS1154](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1154) ([#1105](https://github.com/JosefPihrt/Roslynator/pull/1105)).
+- Fix [RCS1211](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1211) ([#1095](https://github.com/JosefPihrt/Roslynator/pull/1095)).
+- Fix [RCS0005](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0005) ([#1114](https://github.com/JosefPihrt/Roslynator/pull/1114)).
+- Fix [RCS1176](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1176.md) ([#1122](https://github.com/JosefPihrt/Roslynator/pull/1122), [#1140](https://github.com/JosefPihrt/Roslynator/pull/1140)).
 - Fix [RCS1085](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1085.md) ([#1120](https://github.com/josefpihrt/roslynator/pull/1120)).
 - Fix [RCS1208](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1208.md) ([#1119](https://github.com/JosefPihrt/Roslynator/pull/1119)).
 - [CLI] Fix member full declaration in generated documentation (command `generate-doc`) ([#1130](https://github.com/josefpihrt/roslynator/pull/1130)).
   - Append `?` to nullable reference types.
 - Fix [RCS1179](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1179.md) ([#1129](https://github.com/JosefPihrt/Roslynator/pull/1129)).
-
+- Fix [RCS0060](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0060.md) ([#1139](https://github.com/JosefPihrt/Roslynator/pull/1139)).
 ## [4.3.0] - 2023-04-24
 
 ### Changed
