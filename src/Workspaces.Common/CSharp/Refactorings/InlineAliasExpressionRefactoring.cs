@@ -75,10 +75,13 @@ internal static class InlineAliasExpressionRefactoring
             if (SymbolEqualityComparer.Default.Equals(aliasSymbol, AliasSymbol))
             {
                 return Replacement
-                    .WithTriviaFrom(node)
-                    .WithSimplifierAnnotation();
+                    .WithTriviaFrom(node); 
+                    // .WithSimplifierAnnotation(); This a performance killer.
             }
-
+  
+            // The problem looks to come from this
+            //             => document.GetRequiredLanguageService<ISimplificationService>().ReduceAsync(
+//            document, spans.ToImmutableArrayOrEmpty(), options, reducers: default, cancellationToken);
             return base.VisitIdentifierName(node);
         }
     }
