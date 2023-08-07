@@ -75,8 +75,8 @@ internal static class InlineAliasExpressionRefactoring
                 && Replacement is NameSyntax replacementName)
             {
                 return SyntaxFactory.QualifiedName(replacementName, node.Name)
-                    .WithTriviaFrom(node)
-                    .WithSimplifierAnnotation();
+                    .WithTriviaFrom(node);
+                // .WithSimplifierAnnotation();
             }
 
             return base.VisitAliasQualifiedName(node);
