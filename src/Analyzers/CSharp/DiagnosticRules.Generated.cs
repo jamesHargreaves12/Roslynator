@@ -530,7 +530,7 @@ namespace Roslynator.CSharp
             messageFormat:      "Avoid usage of using alias directive.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
+            isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.AvoidUsageOfUsingAliasDirective, 
             customTags:         Array.Empty<string>());
@@ -1956,7 +1956,7 @@ namespace Roslynator.CSharp
             messageFormat:      "Reduce 'if' nesting.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
+            isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.ReduceIfNesting, 
             customTags:         Array.Empty<string>());
