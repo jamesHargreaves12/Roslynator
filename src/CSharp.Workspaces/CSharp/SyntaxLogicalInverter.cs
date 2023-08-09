@@ -128,6 +128,8 @@ public class SyntaxLogicalInverter
             case SyntaxKind.IsExpression:
                 {
                     var isExpression = (BinaryExpressionSyntax)expression;
+                    string fullyQualifiedName = semanticModel.GetSymbolInfo(isExpression.Right, cancellationToken).Symbol!
+                        .ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
                     return (Options.UseNotPattern)
                         ? IsPatternExpression(
                             isExpression.Left,
@@ -135,7 +137,7 @@ public class SyntaxLogicalInverter
                             UnaryPattern(
                                 Token(SyntaxKind.NotKeyword)
                                     .WithTrailingTrivia(isExpression.OperatorToken.TrailingTrivia),
-                                TypePattern((TypeSyntax)isExpression.Right)))
+                                TypePattern(ParseTypeName(fullyQualifiedName))))
                         : DefaultInvert(expression);
                 }
             case SyntaxKind.AsExpression:
@@ -338,6 +340,7 @@ public class SyntaxLogicalInverter
         return null;
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static")]
     internal BinaryExpressionSyntax InvertBinaryExpression(BinaryExpressionSyntax binaryExpression)
     {
         SyntaxToken operatorToken = InvertBinaryOperatorToken(binaryExpression.OperatorToken);
