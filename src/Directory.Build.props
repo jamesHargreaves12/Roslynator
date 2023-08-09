@@ -17,7 +17,7 @@
 
   <PropertyGroup>
     <Version Condition="'$(Version)' == ''">1.0.0</Version>
-    <RoslynatorRoslynVersion>4.4.0</RoslynatorRoslynVersion>
+    <RoslynatorRoslynVersion>4.5.0</RoslynatorRoslynVersion>
     <RoslynatorRoslynAnalyzersVersion>3.3.4</RoslynatorRoslynAnalyzersVersion>
     <RoslynatorCliRoslynVersion>4.6.0</RoslynatorCliRoslynVersion>
     <RoslynatorTestingRoslynVersion>4.6.0</RoslynatorTestingRoslynVersion>
