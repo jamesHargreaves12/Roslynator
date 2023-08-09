@@ -280,12 +280,12 @@ public sealed class UseConditionalAccessAnalyzer : BaseDiagnosticAnalyzer
                             return false;
 
                         if (leftTypeSymbol.IsValueType && !CSharpFacts.IsPredefinedType(leftTypeSymbol.SpecialType))
-                        { 
+                        {
                             // If the LHS is a ValueTypes then making the expression conditional would change the type of the expression
                             // and hence we would call a different overload (a valid overload may not exists)
                             return false;
                         }
-                        
+
                         expression = ((BinaryExpressionSyntax)expression)
                             .Right?
                             .WalkDownParentheses();
