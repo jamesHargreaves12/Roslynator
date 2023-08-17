@@ -375,27 +375,23 @@ class C
     {
         await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
-
 class C
 {
     void M()
     {
         string s = null;
         var sb = new StringBuilder();
-
         sb.Append([|$""""""<a href=""somelink"">{s}</a>""""""|]);
     }
 }
 ", @"
 using System.Text;
-
 class C
 {
     void M()
     {
         string s = null;
         var sb = new StringBuilder();
-
         sb.Append(""""""<a href=""somelink"">"""""").Append(s).Append(""""""</a>"""""");
     }
 }
@@ -407,14 +403,12 @@ class C
     {
         await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
-
 class C
 {
     void M()
     {
         string s = null;
         var sb = new StringBuilder();
-
         sb.Append([|$""""""
                     <a href=""somelink"">{s}</a>
 """"""|]
@@ -423,14 +417,12 @@ class C
 }
 ", @"
 using System.Text;
-
 class C
 {
     void M()
     {
         string s = null;
         var sb = new StringBuilder();
-
         sb.Append(""""""
                     <a href=""somelink"">
 """"""

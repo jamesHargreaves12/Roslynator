@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Linq;
@@ -29,7 +30,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
         return FixAllProvider.Create(async (context, document, diagnostics) => await FixAllAsync(document, diagnostics, context.CancellationToken).ConfigureAwait(false));
     }
 
-    private async Task<Document> FixAllAsync(Document document, ImmutableArray<Diagnostic> diagnostics, CancellationToken cancellationToken)
+    private static async Task<Document> FixAllAsync(Document document, ImmutableArray<Diagnostic> diagnostics, CancellationToken cancellationToken)
     {
         foreach (Diagnostic diagnostic in diagnostics.OrderByDescending(d => d.Location.SourceSpan.Start))
         {
@@ -59,7 +60,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
         {
             ImplicitArrayCreationExpressionSyntax => "Use explicitly typed array",
             ArrayCreationExpressionSyntax => "Use implicitly typed array",
-            _ => "",
+            _ => throw new InvalidOperationException(),
         };
 
         CodeAction codeAction = CodeAction.Create(
@@ -87,7 +88,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
         {
             ImplicitArrayCreationExpressionSyntax implicitArrayCreation => await ChangeArrayTypeToExplicitAsync(document, implicitArrayCreation, cancellationToken).ConfigureAwait(false),
             ArrayCreationExpressionSyntax arrayCreation => await ChangeArrayTypeToImplicitAsync(document, arrayCreation, cancellationToken).ConfigureAwait(false),
-            _ => null
+            _ => throw new InvalidOperationException()
         };
     }
 
