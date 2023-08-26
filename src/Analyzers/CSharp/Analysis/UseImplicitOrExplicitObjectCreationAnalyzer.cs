@@ -121,15 +121,21 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
                 }
             case SyntaxKind.ArrayInitializerExpression:
                 {
-                    SyntaxDebug.Assert(parent.IsParentKind(SyntaxKind.ArrayCreationExpression, SyntaxKind.ImplicitArrayCreationExpression, SyntaxKind.EqualsValueClause, SyntaxKind.ImplicitStackAllocArrayCreationExpression), parent.Parent);
-
+                    SyntaxDebug.Assert(parent.IsParentKind(SyntaxKind.StackAllocArrayCreationExpression, SyntaxKind.ArrayCreationExpression, SyntaxKind.ImplicitArrayCreationExpression, SyntaxKind.EqualsValueClause, SyntaxKind.ImplicitStackAllocArrayCreationExpression), parent.Parent);
+                    
                     if (UseImplicitObjectCreation(context))
                     {
                         if (parent.IsParentKind(SyntaxKind.ArrayCreationExpression))
                         {
                             var arrayCreationExpression = (ArrayCreationExpressionSyntax)parent.Parent;
 
-                            AnalyzeType(context, objectCreation, arrayCreationExpression.Type.ElementType);
+                            AnalyzeType(context, objectCreation, arrayCreationExpression!.Type.ElementType);
+                        }
+                        else if (parent.IsParentKind(SyntaxKind.StackAllocArrayCreationExpression))
+                        {
+                            var stackAllocArrayCreationExpression = (StackAllocArrayCreationExpressionSyntax)parent.Parent;
+                            // TODO 
+                            // AnalyzeType(context, objectCreation, stackAllocArrayCreationExpression!.Type);
                         }
                         else if (parent.IsParentKind(SyntaxKind.EqualsValueClause))
                         {
