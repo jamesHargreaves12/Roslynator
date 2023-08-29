@@ -432,6 +432,11 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
                                 {
                                     SyntaxDebug.Assert(parent.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.LocalDeclarationStatement, SyntaxKind.UsingStatement), parent.Parent);
 
+                                    ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(implicitObjectCreation);
+
+                                    if (typeSymbol.ToTypeSyntax() is TupleTypeSyntax)
+                                        return;
+
                                     if (UseExplicitObjectCreation(context))
                                         ReportDiagnostic(context, implicitObjectCreation);
                                 }
