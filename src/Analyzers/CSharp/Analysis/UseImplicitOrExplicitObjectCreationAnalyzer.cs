@@ -310,6 +310,8 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
                         if (parent is VariableDeclarationSyntax variableDeclaration)
                         {
                             SyntaxDebug.Assert(!variableDeclaration.Type.IsVar, variableDeclaration);
+                            if(variableDeclaration.Type is TupleTypeSyntax)
+                                return;
 
                             SyntaxDebug.Assert(parent.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.LocalDeclarationStatement, SyntaxKind.UsingStatement), parent.Parent);
 
@@ -340,6 +342,9 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
                     {
                         TypeSyntax type = DetermineReturnType(parent.Parent);
 
+                        if(type is TupleTypeSyntax)
+                            return;
+                        
                         SyntaxDebug.Assert(type is not null, parent);
 
                         if (type is not null)
@@ -373,21 +378,23 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
 
                         TypeSyntax type = DetermineReturnType(node);
 
-                        if (type is not null)
-                        {
-                            if (parent.IsKind(SyntaxKind.YieldReturnStatement))
-                            {
-                                ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(type, context.CancellationToken);
+                        if (type is null) continue;
+                        
+                        if(type is TupleTypeSyntax)
+                            return;
 
-                                if (typeSymbol?.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T)
-                                {
-                                    ReportDiagnostic(context, implicitObjectCreation);
-                                }
-                            }
-                            else
+                        if (parent.IsKind(SyntaxKind.YieldReturnStatement))
+                        {
+                            ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(type, context.CancellationToken);
+
+                            if (typeSymbol?.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T)
                             {
                                 ReportDiagnostic(context, implicitObjectCreation);
                             }
+                        }
+                        else
+                        {
+                            ReportDiagnostic(context, implicitObjectCreation);
                         }
                     }
 

@@ -63,7 +63,7 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
 
         if (SyntaxTriviaAnalysis.IsOptionalWhitespaceThenEndOfLineTrivia(token.TrailingTrivia))
         {
-            SyntaxToken newToken = token.WithTrailingTrivia(ElasticSpace);
+            SyntaxToken newToken = token.WithTrailingTrivia(NewLine()).WithFormatterAnnotation();
 
             newNode = newNode.ReplaceToken(token, newToken);
         }
@@ -260,9 +260,9 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
         if (expression.IsSingleLine())
         {
             accessorList = accessorList
-                .RemoveWhitespace()
+                // .RemoveWhitespace()
                 .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(NewLine()))
-                .WithFormatterAnnotation();
+                .WithFormatterAnnotation(); // this causes issues  check https://github.com/Ryujinx/Ryujinx.git ff53dcf5607a82ad38388502b4cf5cc8cca77733 --source ff53dcf5607a82ad38388502b4cf5cc8cca77733~1 --project-filter "src/ARMeilleure/ARMeilleure.csproj"
         }
 
         return accessorList;
@@ -306,7 +306,7 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
             expression,
             semicolon,
             configOptions,
-            (e, s) => ReturnStatement(Token(SyntaxKind.ReturnKeyword), e, s),
+            (e, s) => ReturnStatement(Token(SyntaxKind.ReturnKeyword).WithTrailingTrivia(ElasticSpace), e, s),
             increaseCount: increaseCount);
     }
 
