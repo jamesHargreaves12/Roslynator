@@ -66,14 +66,18 @@ public sealed class RemoveUnnecessaryElseAnalyzer : BaseDiagnosticAnalyzer
         if (elseClause.Statement is not BlockSyntax elseBlock)
             return true;
 
-        if (LocalDeclaredVariablesOverlap(elseBlock, ifBlock, semanticModel))
+        if (LocalDeclaredVariablesOverlapWithIf(elseBlock, ifBlock, semanticModel))
             return false;
-
-        return ifStatement.Parent is not SwitchSectionSyntax { Parent: SwitchStatementSyntax switchStatement }
-               || !SwitchLocallyDeclaredVariablesHelper.BlockDeclaredVariablesOverlapWithOtherSwitchSections(elseBlock, switchStatement, semanticModel);
+        
+        return ifStatement.Parent switch
+        {
+            SwitchSectionSyntax { Parent: SwitchStatementSyntax switchStatement } => !SwitchLocallyDeclaredVariablesHelper.BlockDeclaredVariablesOverlapWithOtherSwitchSections(elseBlock, switchStatement, semanticModel),
+            BlockSyntax block => !LocalDeclaredVariablesOverlapWithParent(elseBlock, block, semanticModel),
+            _ => false
+        };
     }
 
-    private static bool LocalDeclaredVariablesOverlap(BlockSyntax elseBlock, BlockSyntax ifBlock, SemanticModel semanticModel)
+    private static bool LocalDeclaredVariablesOverlapWithIf(BlockSyntax elseBlock, BlockSyntax ifBlock, SemanticModel semanticModel)
     {
         ImmutableArray<ISymbol> elseVariablesDeclared = semanticModel.AnalyzeDataFlow(elseBlock)!
             .VariablesDeclared;
@@ -99,4 +103,39 @@ public sealed class RemoveUnnecessaryElseAnalyzer : BaseDiagnosticAnalyzer
 
         return false;
     }
+    
+    
+    private static bool LocalDeclaredVariablesOverlapWithParent(BlockSyntax elseBlock, BlockSyntax parentBlock, SemanticModel semanticModel)
+    {
+        ImmutableArray<ISymbol> elseVariablesDeclared = semanticModel.AnalyzeDataFlow(elseBlock)!
+            .VariablesDeclared;
+        
+        ImmutableHashSet<string> elseVariableNames = elseVariablesDeclared
+            .Select(s => s.Name)
+            .ToImmutableHashSet();
+        
+        if (elseVariablesDeclared.IsEmpty)
+            return false;
+
+        foreach (var statement in parentBlock.Statements)
+        {
+            if(statement.Span.Contains(elseBlock.Span))
+                continue;
+            
+            ImmutableArray<ISymbol> variablesDeclared = semanticModel.AnalyzeDataFlow(statement)!.VariablesDeclared;
+
+            if (variablesDeclared.IsEmpty)
+                return false;
+            
+            foreach (ISymbol v in variablesDeclared)
+            {
+                if (elseVariableNames.Contains(v.Name))
+                    return true;
+            }
+
+        }
+        
+        return false;
+    }
+
 }
