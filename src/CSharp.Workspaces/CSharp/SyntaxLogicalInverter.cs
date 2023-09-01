@@ -128,7 +128,12 @@ public class SyntaxLogicalInverter
             case SyntaxKind.IsExpression:
                 {
                     var isExpression = (BinaryExpressionSyntax)expression;
-                    var rightTypeSymbol = (ITypeSymbol)semanticModel.GetSymbol(isExpression.Right, cancellationToken)!;
+                    ISymbol symbol = semanticModel.GetSymbol(isExpression.Right, cancellationToken);
+                    if (symbol is not ITypeSymbol rightTypeSymbol) // IFieldSymbol; check https://github.com/ChilliCream/graphql-platform.git b4c3ac0ee381669266fbc952212e2b826680ef24 --source b4c3ac0ee381669266fbc952212e2b826680ef24~1 --verbosity Debug --project-filter /src/HotChocolate/Fusion/src/Core/HotChocolate.Fusion.csproj
+                    {
+                        return DefaultInvert(expression);
+                    }
+
 
                     TypeSyntax type = rightTypeSymbol.ToTypeSyntax();
 
