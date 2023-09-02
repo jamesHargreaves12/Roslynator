@@ -68,7 +68,7 @@ public sealed class RemoveUnnecessaryElseAnalyzer : BaseDiagnosticAnalyzer
 
         if (LocalDeclaredVariablesOverlapWithIf(elseBlock, ifBlock, semanticModel))
             return false;
-        
+
         return ifStatement.Parent switch
         {
             SwitchSectionSyntax { Parent: SwitchStatementSyntax switchStatement } => !SwitchLocallyDeclaredVariablesHelper.BlockDeclaredVariablesOverlapWithOtherSwitchSections(elseBlock, switchStatement, semanticModel),
@@ -103,30 +103,30 @@ public sealed class RemoveUnnecessaryElseAnalyzer : BaseDiagnosticAnalyzer
 
         return false;
     }
-    
-    
+
+
     private static bool LocalDeclaredVariablesOverlapWithParent(BlockSyntax elseBlock, BlockSyntax parentBlock, SemanticModel semanticModel)
     {
         ImmutableArray<ISymbol> elseVariablesDeclared = semanticModel.AnalyzeDataFlow(elseBlock)!
             .VariablesDeclared;
-        
+
         ImmutableHashSet<string> elseVariableNames = elseVariablesDeclared
             .Select(s => s.Name)
             .ToImmutableHashSet();
-        
+
         if (elseVariablesDeclared.IsEmpty)
             return false;
 
         foreach (var statement in parentBlock.Statements)
         {
-            if(statement.Span.Contains(elseBlock.Span))
+            if (statement.Span.Contains(elseBlock.Span))
                 continue;
-            
+
             ImmutableArray<ISymbol> variablesDeclared = semanticModel.AnalyzeDataFlow(statement)!.VariablesDeclared;
 
             if (variablesDeclared.IsEmpty)
                 return false;
-            
+
             foreach (ISymbol v in variablesDeclared)
             {
                 if (elseVariableNames.Contains(v.Name))
@@ -134,7 +134,7 @@ public sealed class RemoveUnnecessaryElseAnalyzer : BaseDiagnosticAnalyzer
             }
 
         }
-        
+
         return false;
     }
 

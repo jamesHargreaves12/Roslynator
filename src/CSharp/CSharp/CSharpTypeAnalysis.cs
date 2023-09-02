@@ -610,6 +610,7 @@ internal static class CSharpTypeAnalysis
             case SyntaxKind.YieldReturnStatement:
             case SyntaxKind.ConditionalExpression:
             case SyntaxKind.ComplexElementInitializerExpression:
+            case SyntaxKind.SwitchStatement:
                 {
                     SyntaxDebug.Assert(tupleExpression.ContainsDiagnostics || !tupleExpression.Arguments.Any(f => f.Expression.IsKind(SyntaxKind.DeclarationExpression)), tupleExpression);
                     return false;

@@ -122,7 +122,7 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
             case SyntaxKind.ArrayInitializerExpression:
                 {
                     SyntaxDebug.Assert(parent.IsParentKind(SyntaxKind.StackAllocArrayCreationExpression, SyntaxKind.ArrayCreationExpression, SyntaxKind.ImplicitArrayCreationExpression, SyntaxKind.EqualsValueClause, SyntaxKind.ImplicitStackAllocArrayCreationExpression), parent.Parent);
-                    
+
                     if (UseImplicitObjectCreation(context))
                     {
                         if (parent.IsParentKind(SyntaxKind.ArrayCreationExpression))
@@ -310,7 +310,7 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
                         if (parent is VariableDeclarationSyntax variableDeclaration)
                         {
                             SyntaxDebug.Assert(!variableDeclaration.Type.IsVar, variableDeclaration);
-                            if(variableDeclaration.Type is TupleTypeSyntax)
+                            if (variableDeclaration.Type is TupleTypeSyntax)
                                 return;
 
                             SyntaxDebug.Assert(parent.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.LocalDeclarationStatement, SyntaxKind.UsingStatement), parent.Parent);
@@ -342,9 +342,9 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
                     {
                         TypeSyntax type = DetermineReturnType(parent.Parent);
 
-                        if(type is TupleTypeSyntax)
+                        if (type is TupleTypeSyntax)
                             return;
-                        
+
                         SyntaxDebug.Assert(type is not null, parent);
 
                         if (type is not null)
@@ -379,8 +379,8 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
                         TypeSyntax type = DetermineReturnType(node);
 
                         if (type is null) continue;
-                        
-                        if(type is TupleTypeSyntax)
+
+                        if (type is TupleTypeSyntax)
                             return;
 
                         if (parent.IsKind(SyntaxKind.YieldReturnStatement))
